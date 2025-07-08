@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using UnityEditor.TerrainTools;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ public class metronome : MonoBehaviour
     private AudioSource metronomeClick;
     private float lastMetronomeTime;
     private float BPM;
+    private float nextJumpTime;
 
 
 
@@ -35,12 +37,23 @@ public class metronome : MonoBehaviour
             lastMetronomeTime = currentTime;
             currentTime = 0f;
             metronomeClick.Play();
+
             
         }
+        
     }
 
     public float GetLastMetronomeTime()
     {
         return lastMetronomeTime;
+    }
+
+    public bool CheckIfInTime(float time)
+    {   
+        //check if an input is in time or not, cross reference it with the next metronome click.
+
+        //nextJumpTime = lastMetronomeTime + 
+        return false;
+
     }
 }

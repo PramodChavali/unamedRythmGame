@@ -17,8 +17,11 @@ public class MIDILoader : MonoBehaviour
     [SerializeField] private GameObject halfRest;
     [SerializeField] private GameObject wholeRest;
 
+    [SerializeField] private GameObject barPrefab;
+
     private MidiFile midiFile;
     private List<noteSO> noteList = new List<noteSO>();
+    public List<barSO> barList = new List<barSO>();
     private float BPM;
     private float beatDurationMultiplier;
     
@@ -39,7 +42,6 @@ public class MIDILoader : MonoBehaviour
         for (int i = 0; i < notes.Count(); i++)
         {
             noteList.Add(ScriptableObject.CreateInstance<noteSO>());
-            Debug.Log(i);
             int octaveNumber = (notes[i].NoteNumber / 12) - 1;
             noteList[i].noteOctave = octaveNumber;
             noteList[i].noteName = notes[i].NoteName.ToString() + octaveNumber.ToString();
@@ -138,28 +140,40 @@ public class MIDILoader : MonoBehaviour
                     break;
             }
         }
-
-        for (int i = 0; i < notes.Count(); i++)
-        {
-            Debug.Log($"note duration is {noteList[i].noteDuration.ToString()} beats, pitch is {noteList[i].noteName}");
-        }
-          
         
-        //assign to a list of barSOs
+        for (int i = 0; i < noteList.Count(); i++)
+        {
+            float tempDuration = 0f;
+
+            if (i % timeSignature.Numerator == 0)
+            {
+                barList.Add(ScriptableObject.CreateInstance<barSO>());
+            }
+
+            
+            barList[barList.Count() - 1].notesInBar.Add(noteList[i]);
+            tempDuration += noteList[i].noteDuration;
+            
+            
+        }
+
+        for (int i = 0; i < barList.Count(); i++)
+        {
+            for (int j = 0; j < barList[i].notesInBar.Count; j++)
+            {
+                Debug.Log($"bar {i}, note {j} is {barList[i].notesInBar[j].noteName}");
+            }
+        }
     }
 
     private void Update()
     {
-        
+
     }
 
     public float GetBPM()
     {
         return BPM;
     }
-    private float CalculateDuration(int ticks, int tempoInMicroseconds, float multiplier)
-    {
-        //find out how long each note lasts in seconds
-        return 0f;
-    }
+
 }
