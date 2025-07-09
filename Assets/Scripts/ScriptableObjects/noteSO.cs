@@ -12,5 +12,7 @@ public class noteSO : ScriptableObject
     public GameObject prefab;
     public int noteOctave;
     public bool rest = false;
+    public float xPosistionInBar;
+    public float yPosistionInBar;
 
 }
